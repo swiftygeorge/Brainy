@@ -18,9 +18,18 @@ struct ContentView: View {
     @State private var gameOver = false
     @State private var userAnswer = ""
     
-    var linearGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [.blue, .red]), startPoint: .top, endPoint: .bottom)
+    var lightPink: Color = Color("light pink")
+    var darkBlue: Color = Color("dark blue")
     
-    var radialGradient: RadialGradient = RadialGradient(stops: [.init(color: Color("redish"), location: 0.3), .init(color: Color("purpleish"), location: 0.3)], center: .top, startRadius: 200, endRadius: 400)
+    var radialGradient: RadialGradient {
+        return RadialGradient(stops: [.init(color: lightPink, location: 0.3), .init(color: darkBlue, location: 0.3)], center: .top, startRadius: 200, endRadius: 400)
+    }
+    
+    var circle: some View {
+        Circle()
+            .frame(width: 150, height: 150)
+            .foregroundColor(lightPink)
+    }
     
     var body: some View {
         ZStack {
@@ -46,12 +55,35 @@ struct ContentView: View {
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 10) {
-                        GameButton(answer: $userAnswer, image: "rock", playGame: playGame)
+                        ZStack {
+                            GameButton(answer: $userAnswer, image: "rock", playGame: playGame)
+                                .disabled(gameStarted == false)
+                            
+                            if gameStarted == false {
+                                circle
+                            } //if
+                        } //zstack
+                        
                         Spacer()
-                        GameButton(answer: $userAnswer, image: "paper", playGame: playGame)
+                        
+                        ZStack {
+                            GameButton(answer: $userAnswer, image: "paper", playGame: playGame)
+                                .disabled(gameStarted == false)
+                            
+                            if gameStarted == false {
+                                circle
+                            } //if
+                        } //zstack
                     } //hstack
                     
-                    GameButton(answer: $userAnswer, image: "scissors", playGame: playGame)
+                    ZStack {
+                        GameButton(answer: $userAnswer, image: "scissors", playGame: playGame)
+                            .disabled(gameStarted == false)
+                        
+                        if gameStarted == false {
+                            circle
+                        } //if
+                    } //zstack
                 } //vstack
                 .padding()
                 .background(.ultraThinMaterial)
@@ -65,20 +97,25 @@ struct ContentView: View {
                     Text("\(score)")
                         .font(.largeTitle.weight(.medium))
                 } //hstack
-                .foregroundColor(.white)
+                .foregroundColor(gameStarted ? .white : .secondary)
                 
                 Spacer()
                 
                 HStack {
+                    Spacer()
+                    
                     // start game
                     Button {
                         gameStarted = true
                     } label: {
                         Text("START")
                             .bold()
+                            .foregroundColor(gameStarted ? .secondary : lightPink)
                     } //button
                     .disabled(gameStarted == true)
                     
+                    Spacer()
+                    Spacer()
                     Spacer()
                     
                     // reset game
@@ -88,8 +125,11 @@ struct ContentView: View {
                     } label: {
                         Text("RESTART")
                             .bold()
+                            .foregroundColor(gameStarted ? lightPink : .secondary)
                     } //button
                     .disabled(gameStarted == false)
+                    
+                    Spacer()
                 } //hstack
                 .alert("Restart Game?", isPresented: $gameRestarted) {
                     Button("Cancel", role: .cancel, action: {})

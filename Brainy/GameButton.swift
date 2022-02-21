@@ -12,6 +12,7 @@ struct GameButton: View {
     
     var image: String
     var playGame: () -> Void
+    var lightPink: Color = Color("light pink")
     
     var body: some View {
         Button {
@@ -25,8 +26,8 @@ struct GameButton: View {
                     .padding(30)
                     .background(.thickMaterial)
                     .clipShape(Circle())
-                    .padding(5)
-                    .background(.blue)
+                    .padding(3)
+                    .background(lightPink)
                     .frame(maxWidth: 150, maxHeight: 150)
                     .clipShape(Circle())
             } //zstack
