@@ -11,6 +11,8 @@
 		32D66C0D27C3104B00E613A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D66C0C27C3104B00E613A1 /* ContentView.swift */; };
 		32D66C0F27C3104B00E613A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32D66C0E27C3104B00E613A1 /* Assets.xcassets */; };
 		32D66C1227C3104B00E613A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32D66C1127C3104B00E613A1 /* Preview Assets.xcassets */; };
+		32D66C1927C3570700E613A1 /* GameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D66C1827C3570700E613A1 /* GameButton.swift */; };
+		32D66C1B27C3578800E613A1 /* DetailColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D66C1A27C3578800E613A1 /* DetailColumn.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		32D66C0C27C3104B00E613A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		32D66C0E27C3104B00E613A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		32D66C1127C3104B00E613A1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		32D66C1827C3570700E613A1 /* GameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameButton.swift; sourceTree = "<group>"; };
+		32D66C1A27C3578800E613A1 /* DetailColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailColumn.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,8 @@
 			children = (
 				32D66C0A27C3104B00E613A1 /* BrainyApp.swift */,
 				32D66C0C27C3104B00E613A1 /* ContentView.swift */,
+				32D66C1827C3570700E613A1 /* GameButton.swift */,
+				32D66C1A27C3578800E613A1 /* DetailColumn.swift */,
 				32D66C0E27C3104B00E613A1 /* Assets.xcassets */,
 				32D66C1027C3104B00E613A1 /* Preview Content */,
 			);
@@ -138,6 +144,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				32D66C0D27C3104B00E613A1 /* ContentView.swift in Sources */,
+				32D66C1927C3570700E613A1 /* GameButton.swift in Sources */,
+				32D66C1B27C3578800E613A1 /* DetailColumn.swift in Sources */,
 				32D66C0B27C3104B00E613A1 /* BrainyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

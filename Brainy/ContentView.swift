@@ -20,10 +20,12 @@ struct ContentView: View {
     
     var linearGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [.blue, .red]), startPoint: .top, endPoint: .bottom)
     
+    var radialGradient: RadialGradient = RadialGradient(stops: [.init(color: Color("redish"), location: 0.3), .init(color: Color("purpleish"), location: 0.3)], center: .top, startRadius: 200, endRadius: 400)
+    
     var body: some View {
         ZStack {
             // background
-            linearGradient
+            radialGradient
                 .ignoresSafeArea()
             
             // score, instructions e.t.c.
@@ -40,6 +42,7 @@ struct ContentView: View {
                 .foregroundStyle(.white)
                 
                 Spacer()
+                Spacer()
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 10) {
@@ -50,6 +53,9 @@ struct ContentView: View {
                     
                     GameButton(answer: $userAnswer, image: "scissors", playGame: playGame)
                 } //vstack
+                .padding()
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 
                 Spacer()
                 
@@ -152,49 +158,6 @@ struct ContentView: View {
         default:
             return false
         } //switch
-    }
-}
-
-struct GameButton: View {
-    @Binding var answer: String
-    
-    var image: String
-    var playGame: () -> Void
-    
-    var body: some View {
-        Button {
-            answer = image.capitalized
-            playGame()
-        } label: {
-            ZStack {
-                Image(image)
-                    .resizable()
-                    .scaledToFit()
-                    .padding(30)
-                    .background(.thickMaterial)
-                    .clipShape(Circle())
-                    .padding(5)
-                    .background(.blue)
-                    .frame(maxWidth: 150, maxHeight: 150)
-                    .clipShape(Circle())
-            } //zstack
-        } //button
-        .shadow(radius: 5)
-    }
-}
-
-struct DetailColumn: View {
-    var text: String
-    var secondaryText: String
-    var trailing: Bool = false
-    
-    var body: some View {
-        VStack(alignment: trailing ? .trailing : .leading) {
-            Text(text.uppercased())
-                .font(.subheadline.weight(.light))
-            Text(secondaryText.uppercased())
-                .font(.title.bold())
-        } //vstack
     }
 }
 
