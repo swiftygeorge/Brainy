@@ -12,9 +12,11 @@ struct ContentView: View {
     @State private var computerChoice = Int.random(in: 0 ..< 3)
     @State private var shouldWin = Bool.random()
     @State private var score = 0
-    @State private var playCount = 0
+    @State private var playCount = 1
     @State private var gameStarted = false
-    @State private var restartGame = false
+    @State private var gameRestarted = false
+    @State private var gameOver = false
+    @State private var userAnswer = ""
     
     var linearGradient: LinearGradient = LinearGradient(gradient: Gradient(colors: [.blue, .red]), startPoint: .top, endPoint: .bottom)
     
@@ -41,19 +43,23 @@ struct ContentView: View {
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 10) {
-                        GameButton(image: "rock")
+                        GameButton(answer: $userAnswer, image: "rock", playGame: playGame)
                         Spacer()
-                        GameButton(image: "paper")
+                        GameButton(answer: $userAnswer, image: "paper", playGame: playGame)
                     } //hstack
                     
-                    GameButton(image: "scissors")
+                    GameButton(answer: $userAnswer, image: "scissors", playGame: playGame)
                 } //vstack
                 
                 Spacer()
                 
-                Text("\(gameStarted ? "Score: \(score)" : "")")
-                    .font(.largeTitle.weight(.heavy))
-                    .foregroundColor(.white)
+                HStack(alignment: .firstTextBaseline, spacing: 5) {
+                    Text("\(gameOver ? "Final Score:" : "Score:")")
+                        .font(.title.weight(.medium))
+                    Text("\(score)")
+                        .font(.largeTitle.weight(.medium))
+                } //hstack
+                .foregroundColor(.white)
                 
                 Spacer()
                 
@@ -71,7 +77,7 @@ struct ContentView: View {
                     
                     // reset game
                     Button {
-                        restartGame = true
+                        gameRestarted = true
                         // do something to reset the game
                     } label: {
                         Text("RESTART")
@@ -79,12 +85,21 @@ struct ContentView: View {
                     } //button
                     .disabled(gameStarted == false)
                 } //hstack
-                .alert("Restart Game?", isPresented: $restartGame) {
+                .alert("Restart Game?", isPresented: $gameRestarted) {
                     Button("Cancel", role: .cancel, action: {})
-                    Button("Restart", role: .destructive, action: restart)
+                    Button("Restart", role: .destructive, action: restartGame)
                 } message: {
                     Text("You'll lose all your progress if you perform this action.")
                 } //alert
+                .alert("Game Over!", isPresented: $gameOver) {
+                    Button("Cancel", role: .cancel) {
+                        restartGame()
+                        gameStarted = false
+                    }
+                    Button("Play Again", action: restartGame)
+                } message: {
+                    Text("Your final score is \(score). Do you want to play again?")
+                }
                 
                 Spacer()
             } //vstack
@@ -92,28 +107,71 @@ struct ContentView: View {
         } //zstack
     }
     
-    func restart() {
-        gameStarted = false
+    func restartGame() {
+        computerChoice = Int.random(in: 0 ..< 3)
+        shouldWin.toggle()
+        score = 0
+        playCount = 1
+        userAnswer = ""
     }
     
     func playGame() {
+        let didPlayerWin = playerWon()
         
+        if shouldWin == didPlayerWin {
+            score += 1
+        } else {
+            score -= 1
+        } //if-else
+        
+        if playCount < 10 {
+            playCount += 1
+            computerChoice = Int.random(in: 0 ..< 3)
+            shouldWin.toggle()
+        } else {
+            gameOver = true
+        } //if-else
+    }
+    
+    func playerWon() -> Bool {
+        let computerSelection = moves[computerChoice]
+        
+        switch true {
+        case userAnswer == "Paper" && computerSelection == "Rock":
+            return true
+        case userAnswer == "Scissors" && computerSelection == "Rock":
+            return false
+        case userAnswer == "Rock" && computerSelection == "Paper":
+            return false
+        case userAnswer == "Scissors" && computerSelection == "Paper":
+            return true
+        case userAnswer == "Rock" && computerSelection == "Scissors":
+            return true
+        case userAnswer == "Paper" && computerSelection == "Scissors":
+            return false
+        default:
+            return false
+        } //switch
     }
 }
 
 struct GameButton: View {
+    @Binding var answer: String
+    
     var image: String
+    var playGame: () -> Void
     
     var body: some View {
         Button {
-            // do something
+            answer = image.capitalized
+            playGame()
         } label: {
             ZStack {
                 Image(image)
                     .resizable()
                     .scaledToFit()
                     .padding(30)
-                    .background(.white)
+                    .background(.thickMaterial)
                     .clipShape(Circle())
                     .padding(5)
                     .background(.blue)
